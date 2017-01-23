@@ -15,9 +15,7 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
 
     private ListView mListView;
-
     private ArrayList<String> mArrayList;
-
     private Context mContext;
 
     @Override
@@ -67,39 +65,40 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        public Object getItem(int i) {
-            return null;
+        public Object getItem(int position) {
+            return mArrayList.get(position);
         }
 
         @Override
-        public long getItemId(int i) {
-            return 0;
+        public long getItemId(int position) {
+            return position;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // 1.初始化不同类型布局的控件
-            ViewHolder mHolder = null;
+            final ViewHolder viewHolder;
             int type = getItemViewType(position);
             if (convertView == null || convertView.getTag() == null) {
-                mHolder = new ViewHolder();
+                viewHolder = new ViewHolder();
                 switch (type) {
                     case TYPE_DATA:
                         convertView = View.inflate(mContext, R.layout.item_text, null);
-                        mHolder.tv_text = (TextView) convertView.findViewById(R.id.tv_text);
+                        viewHolder.tv_text = (TextView) convertView.findViewById(R.id.tv_text);
                         break;
                     case TYPE_IMAGE:
                         convertView = View.inflate(mContext, R.layout.item_image, null);
                         break;
                 }
-                convertView.setTag(mHolder);
+                convertView.setTag(viewHolder);
             } else {
-                mHolder = (ViewHolder) convertView.getTag();
+                viewHolder = (ViewHolder) convertView.getTag();
             }
 
             // 2.渲染不同布局类型的数据
             if (type == TYPE_DATA) {
-
+                String title = mArrayList.get(position);
+                viewHolder.tv_text.setText(title);
             }
 
             if (type == TYPE_IMAGE) {
@@ -107,27 +106,6 @@ public class MainActivity extends Activity {
             }
 
             return convertView;
-        }
-    }
-
-
-
-    /**
-     * 非广告的数据
-     */
-    class NormalItem {
-        private String title;
-
-        public NormalItem(String title) {
-            this.title = title;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
         }
     }
 
