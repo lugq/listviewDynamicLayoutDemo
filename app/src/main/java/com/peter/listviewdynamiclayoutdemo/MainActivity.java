@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
 
@@ -26,7 +27,7 @@ public class MainActivity extends Activity {
         mListView = (ListView) findViewById(R.id.listView);
 
         addData();
-        CustomAdapter mCustomAdapter = new CustomAdapter();
+        CustomAdapter mCustomAdapter = new CustomAdapter(mArrayList);
 
         mListView.setAdapter(mCustomAdapter);
     }
@@ -45,9 +46,16 @@ public class MainActivity extends Activity {
 
         static final int TYPE_COUNT = 2;
 
+        // 使用Object类型，便于扩展
+        private List<Object> mData = new ArrayList<>();
+
+        public CustomAdapter(List data) {
+            this.mData = data;
+        }
+
         @Override
         public int getCount() {
-            return mArrayList.size();
+            return mData.size();
         }
 
         @Override
@@ -97,7 +105,7 @@ public class MainActivity extends Activity {
 
             // 2.渲染不同布局类型的数据
             if (type == TYPE_DATA) {
-                String title = mArrayList.get(position);
+                String title = (String) mData.get(position);
                 viewHolder.tv_text.setText(title);
             }
 
